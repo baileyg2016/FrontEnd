@@ -1,8 +1,10 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import Context from '../Context/Context';
 import { Holdings, HoldingsProps } from './Holdings';
 
 export const ConnectedPlaidInfo: React.FC = () => {
+    const { linkSuccess, isItemAccess, dispatch } = useContext(Context);
     const [data, setData] = useState<HoldingsProps | undefined>(undefined);
     const [error, setError] = useState(undefined);
 
@@ -30,10 +32,13 @@ export const ConnectedPlaidInfo: React.FC = () => {
             ? 
                 <h1>yeah, you have an error {error}</h1>
             :
-                <Holdings
-                    accounts={data?.accounts}
-                    holdings={data?.holdings}
-                    securities={data?.securities}
-                />
+                linkSuccess && isItemAccess ?
+                    <Holdings
+                        accounts={data?.accounts}
+                        holdings={data?.holdings}
+                        securities={data?.securities}
+                    />
+                :
+                    <h1>Not getting anything</h1>
     );
 }

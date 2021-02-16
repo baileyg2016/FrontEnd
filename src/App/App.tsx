@@ -6,9 +6,10 @@ import { Redirect, Route, Switch, BrowserRouter as Router } from 'react-router-d
 import { Signup } from '../components/Signup';
 import { InvestorSignup } from '../components/InvestorSignup';
 import { SubscriberSignup } from '../components/SubscriberSignup';
+import { ConnectedPlaidInfo } from '../components/ConnectedPlaidInfo';
 
 export const App: React.FC = () => {
-  const { linkSuccess, isItemAccess, dispatch } = useContext(Context);
+  const { dispatch } = useContext(Context);
 
   const generateToken = async () => {
     const response = await axios.post("http://localhost:8000/api/create_link_token");
@@ -65,18 +66,15 @@ export const App: React.FC = () => {
     //   </div>
     // </div>
     // <>
-      <Router>
-        <Switch>
-          {/* <Route path={Paths.Home} component={ConnectedPlaidInfo} /> */}
-          <Route exact path={Paths.Home} component={Signup} />
-          <Route exact path={Paths.InvestorSignup} component={InvestorSignup} />
-          <Route exact path={Paths.SubscriberSignup}>
-            <SubscriberSignup />
-          </Route>
-          {/* <Redirect from='*' to={Paths.Home} /> */}
-        </Switch>
-      </Router>
-    // </>
+    <Router>
+      <Switch>
+        <Route exact path={Paths.Home} component={Signup} />
+        <Route exact path={Paths.InvestorSignup} component={InvestorSignup} />
+        <Route exact path={Paths.SubscriberSignup} component={SubscriberSignup} />
+        <Route exact path={Paths.InvestorData} component={ConnectedPlaidInfo} />
+        <Redirect from='*' to={Paths.Home} />
+      </Switch>
+    </Router>
   );
 }
 

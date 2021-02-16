@@ -2,5 +2,6 @@ export enum Paths {
     Home = '/',
     Signup = '/signup',
     InvestorSignup = '/investor/signup',
-    SubscriberSignup = '/subscriber',
+    SubscriberSignup = '/subscriber/signup',
+    InvestorData = '/investor/data',
 }
