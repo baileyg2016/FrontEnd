@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useContext } from "react";
 import { usePlaidLink } from "react-plaid-link";
 import Button from "plaid-threads/Button";
-
 import Context from "../Context/Context";
 import axios from "axios";
 
@@ -11,13 +10,11 @@ const Link = () => {
   const onSuccess = useCallback((public_token: string) => {
     // send public_token to server
     const setToken = async () => {
-        console.log('token', public_token)
         const response = await axios.post("http://localhost:8000/api/set_access_token", {
             public_token: public_token,
         }
         );
 
-        console.log(response)
         if (response.data.error) {
             dispatch({
                 type: "SET_STATE",
