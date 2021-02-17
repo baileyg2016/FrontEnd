@@ -12,8 +12,7 @@ export const App: React.FC = () => {
   const { dispatch } = useContext(Context);
 
   const generateToken = async () => {
-    const response = await axios.post("http://localhost:8000/api/create_link_token");
-    console.log(response)
+    const response = await axios.post(`${process.env.API_ENDPOINT}/api/create_link_token`);
 
     if (response.data.status_code !== 200) {
       dispatch({ type: "SET_STATE", state: { linkToken: null } });
@@ -68,7 +67,7 @@ export const App: React.FC = () => {
     // <>
     <Router>
       <Switch>
-        <Route exact path={Paths.Home} component={Signup} />
+        <Route exact path={Paths.Home} component={SubscriberSignup} />
         <Route exact path={Paths.InvestorSignup} component={InvestorSignup} />
         <Route exact path={Paths.SubscriberSignup} component={SubscriberSignup} />
         <Route exact path={Paths.InvestorData} component={ConnectedPlaidInfo} />

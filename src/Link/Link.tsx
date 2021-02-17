@@ -10,7 +10,7 @@ const Link = () => {
   const onSuccess = useCallback((public_token: string) => {
     // send public_token to server
     const setToken = async () => {
-        const response = await axios.post("http://localhost:8000/api/set_access_token", {
+        const response = await axios.post(`${process.env.API_ENDPOINT}/api/set_access_token`, {
             public_token: public_token,
         }
         );

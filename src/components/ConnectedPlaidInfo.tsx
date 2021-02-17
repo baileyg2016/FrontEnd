@@ -10,8 +10,8 @@ export const ConnectedPlaidInfo: React.FC = () => {
 
     useEffect(() => {
         const getHoldings = async () => {
-            const { data } = await axios.get('http://localhost:8000/api/holdings');
-            
+            const { data } = await axios.get(`${process.env.API_ENDPOINT}/api/holdings`);
+
             if (data.error) {
                 setError(data.error);
             } else {
