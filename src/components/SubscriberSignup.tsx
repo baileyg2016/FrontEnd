@@ -1,29 +1,51 @@
 import React, { useCallback, useState } from 'react';
-import { Button, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Link, TextField } from '@material-ui/core';
-import axios from 'axios';
+import { Button, createStyles, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Link, makeStyles, TextField, Typography } from '@material-ui/core';
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      color: 'red',
+    },
+  }),
+);
 
 export const SubscriberSignup = () => {
+    const styles = useStyles();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [apiId, setApiId] = useState('');
     const [secretKey, setSecretKey] = useState('');
+    const [error, setError] = useState('');
 
     const onCreateAccount = useCallback(() => {
         const createAccount = async () => {
-            const resp = await axios.post(`${process.env.API_ENDPOINT}/signup`, {
-                'username': email,
-                'password': password,
-                'clientId': apiId,
-                'clientSecret': secretKey,
+            const resp = await fetch(`${process.env.API_ENDPOINT}/signup`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    firstname: firstName,
+                    lastname: lastName,
+                    username: email,
+                    password: password,
+                    clientId: apiId,
+                    clientSecret: secretKey,
+                }),
+                headers: { 
+                    "Content-type": "application/json; charset=UTF-8"
+                }
             });
 
-            console.log(resp)
+            const data = await resp.text();
+
+            if (resp.status === 409) {
+                setError(data);
+            }
+
         };
 
         createAccount();
-    }, [email, password, apiId, secretKey]);
+    }, [firstName, lastName, email, password, apiId, secretKey]);
 
     return (
         <>
@@ -58,8 +80,11 @@ export const SubscriberSignup = () => {
                 <FormHelperText>
                     If you do not have an Alpaca account, you can make one <Link target='_blank' rel='noopener noreferrer' href='https://app.alpaca.markets/signup' onClick={(e: any) => e.preventDefault}>here</Link>
                     <br />
-                    Once you are done, you can generate your keys and input them here.
+                    Once you are done, you can generate your keys and input them above.
                 </FormHelperText>
+                {
+                    error && <Typography className={styles.root}>Error: {error}</Typography>
+                }
                 <Button
                     variant="contained"
                     color="primary"

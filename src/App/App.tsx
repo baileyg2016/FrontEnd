@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useContext, useEffect } from 'react';
 import Context from '../Context/Context';
 import { Paths } from './routes';
@@ -12,14 +11,19 @@ export const App: React.FC = () => {
   const { dispatch } = useContext(Context);
 
   const generateToken = async () => {
-    const response = await axios.post(`${process.env.API_ENDPOINT}/api/create_link_token`);
-
-    if (response.data.status_code !== 200) {
+    const response = await fetch(`${process.env.API_ENDPOINT}/api/create_link_token`, {
+      method: 'POST',
+      headers: { 
+          "Content-type": "application/json; charset=UTF-8"
+      }
+  });
+    
+    if (response.status !== 200) {
       dispatch({ type: "SET_STATE", state: { linkToken: null } });
       return;
     }
 
-    const data = await response.data;
+    const data = await response.json();
 
     if (data) {
       console.log(data)
@@ -67,7 +71,7 @@ export const App: React.FC = () => {
     // <>
     <Router>
       <Switch>
-        <Route exact path={Paths.Home} component={SubscriberSignup} />
+        <Route exact path={Paths.Home} component={InvestorSignup} />
         <Route exact path={Paths.InvestorSignup} component={InvestorSignup} />
         <Route exact path={Paths.SubscriberSignup} component={SubscriberSignup} />
         <Route exact path={Paths.InvestorData} component={ConnectedPlaidInfo} />

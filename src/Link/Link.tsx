@@ -10,10 +10,10 @@ const Link = () => {
   const onSuccess = useCallback((public_token: string) => {
     // send public_token to server
     const setToken = async () => {
+        console.log('setting token')
         const response = await axios.post(`${process.env.API_ENDPOINT}/api/set_access_token`, {
-            public_token: public_token,
-        }
-        );
+          public_token: public_token,
+        });
 
         if (response.data.error) {
             dispatch({
@@ -33,7 +33,7 @@ const Link = () => {
             accessToken: data.access_token,
             isItemAccess: true,
         }
-        localStorage.setItem('plaid-state', JSON.stringify(state));
+        // localStorage.setItem('plaid-state', JSON.stringify(state));
         dispatch({
             type: "SET_STATE",
             state: state,
