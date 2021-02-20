@@ -12,14 +12,18 @@ export const SubscriberSignup = () => {
 
     const onCreateAccount = useCallback(() => {
         const createAccount = async () => {
-            const { data } = await axios.post(`${process.env.AWS_ENDPOINT}/signup`, {
-                username: email,
-                password: password,
-                clientId: apiId,
-                clientSecret: secretKey,
+            const resp = await axios.post(`${process.env.API_ENDPOINT}/signup`, {
+                'username': email,
+                'password': password,
+                'clientId': apiId,
+                'clientSecret': secretKey,
             });
+
+            console.log(resp)
         };
-    }, []);
+
+        createAccount();
+    }, [email, password, apiId, secretKey]);
 
     return (
         <>
